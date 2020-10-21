@@ -1,5 +1,5 @@
 <!--
-  last update: 20 Oct 2020
+  last update: 21 Oct 2020
   sysmon-config | A Sysmon configuration focused on default high-quality event tracing and easy customization by the community
   Source version:	71 | Date: 2020-01-16
   Source project:	https://github.com/SwiftOnSecurity/sysmon-config
@@ -1527,10 +1527,8 @@
 				<!--ADDITIONAL REFERENCE: [ https://www.microsoftpressstore.com/articles/article.aspx?p=2762082&seqNum=2 ] -->
 				<!--ADDITIONAL REFERENCE: [ https://web.archive.org/web/20200116001643/http://scholarworks.rit.edu/cgi/viewcontent.cgi?article=1533&context=theses | Understanding malware autostart techniques - Matthew Gottlieb ] -->
 			
-			<!--wait for review-->
-			<TargetObject name="technique_id=T1562.002,technique_name=Disable Windows Event Logging" condition="contains all">REGISTRY\MACHINE\SYSTEM\ControlSet001\Service\EventLog;Retention</TargetObject>
-       		<TargetObject name="technique_id=T1562.002,technique_name=Disable Windows Event Logging" condition="contains all">REGISTRY\MACHINE\SYSTEM\ControlSet001\Service\EventLog;MaxSize</TargetObject>
-
+			<TargetObject name="flag=Amber,technique_id=T1562.002,technique_name=Disable Windows Event Logging" condition="contains all">REGISTRY\MACHINE\SYSTEM\ControlSet001\Service\EventLog;Retention</TargetObject>
+       		<TargetObject name="flag=Amber,technique_id=T1562.002,technique_name=Disable Windows Event Logging" condition="contains all">REGISTRY\MACHINE\SYSTEM\ControlSet001\Service\EventLog;MaxSize</TargetObject>
 			<TargetObject name="flag=Info,technique_id=T1547.001,technique_name=Registry Run Keys / Start Folder" condition="contains">\CurrentVersion\Run</TargetObject><!--Microsoft:Windows: Run keys, incld RunOnce, RunOnceEx, RunServices, RunServicesOnce [Also covers terminal server] -->
 			<TargetObject name="flag=Info,technique_id=T1547.001,technique_name=Registry Run Keys / Start Folder" condition="contains">\Policies\Explorer\Run</TargetObject><!--Microsoft:Windows -->
 			<TargetObject name="flag=Info,technique_id=T1037,technique_name=Boot or Logon Initialization Scripts" condition="contains">\Windows\System\Scripts</TargetObject> <!--Microsoft:Windows: Logon, Loggoff, Shutdown-->
@@ -1691,11 +1689,9 @@
 			<TargetObject name="flag=Red,technique_id=T1546.010,technique_name=Appinit DLLs" condition="is">REGISTRY\MACHINE\SYSTEM\ControlSet001\Services\DNS\Parameters\ServerLevelPluginDll</TargetObject>
 			<!--dotnet ETW tampering-->
 			<TargetObject name="flag=Info,technique_id=T1562.006,technique_name=Impair Defenses - Indicator Blocking" condition="end with">SOFTWARE\Microsoft\.NETFramework\ETWEnabled</TargetObject> <!-- @Cyb3rWard0g and  https://twitter.com/_xpn_/status/1268712093928378368-->
-		  	
-			<!--wait for review-->
-			<TargetObject name="technique_id=T1562.002,technique_name=Disable Windows Event Logging" condition="contains all">REGISTRY\MACHINE\SYSTEM\ControlSet001\Service\EventLog;Retention</TargetObject>
-         	<TargetObject name="technique_id=T1562.002,technique_name=Disable Windows Event Logging" condition="contains all">REGISTRY\MACHINE\SYSTEM\ControlSet001\Service\EventLog;MaxSize</TargetObject>
-			  
+	
+			<TargetObject name="flag=Amber,technique_id=T1562.002,technique_name=Disable Windows Event Logging" condition="contains all">REGISTRY\MACHINE\SYSTEM\ControlSet001\Service\EventLog;Retention</TargetObject>
+         	<TargetObject name="flag=Amber,technique_id=T1562.002,technique_name=Disable Windows Event Logging" condition="contains all">REGISTRY\MACHINE\SYSTEM\ControlSet001\Service\EventLog;MaxSize</TargetObject>
 			<!--Group Policy integrity-->
 			<TargetObject name="flag=Info" condition="begin with">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\GPExtensions</TargetObject> <!--Microsoft:Windows: Group Policy internally uses a plugin architecture that nothing should be modifying-->
 			<!--image file exec options-->
