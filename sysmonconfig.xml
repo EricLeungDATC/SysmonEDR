@@ -318,7 +318,7 @@
 
 		<ProcessCreate onmatch="exclude">
 
-			<SourceImage name="flag=Info" condition="is">C:\Program Files\Palo Alto Networks\Traps\cyserver.exe</SourceImage><!--Palo Alto Cortex XDR-->
+			<ParentImage name="flag=Info" condition="is">C:\Program Files\Palo Alto Networks\Traps\cyserver.exe</ParentImage><!--Palo Alto Cortex XDR-->
 
 			<!--SECTION: Microsoft Windows-->
 			<CommandLine name="flag=Info" condition="begin with"> "C:\Windows\system32\wermgr.exe" "-queuereporting_svc" </CommandLine> <!--Windows:Windows error reporting/telemetry-->
