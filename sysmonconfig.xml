@@ -1,5 +1,5 @@
 <!--
-  last update: 10 Nov 2020
+  last update: 30 Nov 2020
   sysmon-config | A Sysmon configuration focused on default high-quality event tracing and easy customization by the community
   Source version:	71 | Date: 2020-01-16
   Source project:	https://github.com/SwiftOnSecurity/sysmon-config
@@ -10,7 +10,7 @@
   Fork project:	<N/A>
   Fork license:	<N/A>
 
-  REQUIRED: Sysmon version 10.0.4.1 or higher (due to changes in syntax and bug-fixes)
+  REQUIRED: Sysmon version 12 or higher (due to changes in syntax and bug-fixes)
 	https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon
 
   NOTE: To collect Sysmon logs centrally for free, see https://aka.ms/WEF | Command to allow log access to the Network Service:
@@ -62,11 +62,17 @@
 
 -->
 
-<Sysmon schemaversion="4.22">
+<Sysmon schemaversion="4.40">
 	<!--SYSMON META CONFIG-->
-	<HashAlgorithms>md5,sha256,IMPHASH</HashAlgorithms> <!-- Both MD5 and SHA256 are the industry-standard algorithms for identifying files -->
+	<HashAlgorithms>*</HashAlgorithms> <!-- Both MD5 and SHA256 are the industry-standard algorithms for identifying files -->
 	<CheckRevocation/> <!-- Check loaded drivers, log if their code-signing certificate has been revoked, in case malware stole one to sign a kernel driver -->
 
+	<DnsLookup>False</DnsLookup>
+	<!-- Disables lookup behavior, default is True (Boolean) -->
+	<ArchiveDirectory>Sysmon</ArchiveDirectory>
+	<!-- Sets the name of the directory in the C:\ root where preserved files will be saved (String)-->
+	<CaptureClipboard />
+	<!--This enables capturing the Clipboard changes-->
 	<!-- <ImageLoad/> --> <!-- Would manually force-on ImageLoad monitoring, even without configuration below. Included only documentation. -->
 	<!-- <ProcessAccessConfig/> --> <!-- Would manually force-on ProcessAccess monitoring, even without configuration below. Included only documentation. -->
 	<!-- <PipeMonitoringConfig/> --> <!-- Would manually force-on PipeCreated / PipeConnected events, even without configuration below. Included only documentation. -->
@@ -681,8 +687,12 @@
 			<Image name="flag=Amber" condition="image">cmd.exe</Image> <!--Windows: Remote command prompt-->
 			<Image name="flag=Info" condition="image">cmstp.exe</Image> <!--Windows: Connection manager profiles can launch executables from WebDAV [ https://twitter.com/NickTyrer/status/958450014111633408 ] | Credit @NickTyrer @Oddvarmoe @KyleHanslovan @subTee -->
 			<Image name="flag=Amber" condition="image">cscript.exe</Image> <!--WindowsScriptingHost: | Credit @Cyb3rOps [ https://gist.github.com/Neo23x0/a4b4af9481e01e749409 ] -->
-			<Image name="flag=Info" condition="image">driverquery.exe</Image> <!--Windows: Remote recognisance of system configuration, oudated/vulnerable drivers -->
-			<Image name="flag=Amber" condition="image">dsquery.exe</Image> <!--Microsoft: Query Active Directory -->
+			
+			<!--WAIT FOR UPDATE-->
+			<Image name="flag=Info" condition="image">driverquery.exe</Image> <!--Microsoft:Windows: Remote recognisance of system configuration, oudated/vulnerable drivers -->
+			<Image name="flag=Amber,technique_id=T1069,technique_name=Permission Groups Discovery" condition="image">dsquery.exe</Image> <!--Microsoft: Query Active Directory -->
+			<Image name="technique_id=T1069,technique_name=Permission Groups Discovery" condition="image">AdFind.exe</Image>
+
 			<Image name="flag=Info" condition="image">hh.exe</Image> <!--Windows: HTML Help Executable, opens CHM files -->
 			<Image name="flag=Info" condition="image">infDefaultInstall.exe</Image> <!--Microsoft: [ https://github.com/huntresslabs/evading-autoruns ] | Credit @KyleHanslovan -->
 			<Image name="flag=Amber" condition="image">java.exe</Image> <!--Java: Monitor usage of vulnerable application and init from JAR files | Credit @ion-storm -->
@@ -807,6 +817,12 @@
 			<Image name="flag=Amber,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">ScriptRunner.exe</Image>
 			<Image name="flag=Amber,technique_id=T1548.002,technique_name=Bypass User Access Control" condition="image">xwizard.exe</Image><!--https://bohops.com/2018/08/18/abusing-the-com-registry-structure-part-2-loading-techniques-for-evasion-and-persistence/ -->
 			<Image name="flag=Info,technique_id=T1202,technique_name=Indirect Command Execution" condition="image">desktopimgdownldr.exe</Image><!--https://labs.sentinelone.com/living-off-windows-land-a-new-native-file-downldr/-->
+			
+			<!--WAIT FOR UPDATE-->
+			<Image name="flag=Info,technique_id=T1059.001,technique_name=PowerShell" condition="image">OpenConsole.exe</Image>
+        	<Image name="flag=Info,technique_id=T1059.001,technique_name=PowerShell" condition="image">WindowsTerminal.exe</Image>
+        	<Image name="flag=Info" condition="image">dllhost.exe</Image>
+			
 			<!--Mavinject-->
 			<Image name="flag=Amber,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">Mavinject.exe</Image>
 			<!--Native Windows tools - Living off the land-->
@@ -827,7 +843,11 @@
 			<Image name="flag=Info,technique_id=T1047,technique_name=Windows Management Instrumentation" condition="image">wmic.exe</Image> <!--T1047--><!--Mitre T1135--><!--Microsoft:WindowsManagementInstrumentation: Credit @Cyb3rOps [ https://gist.github.com/Neo23x0/a4b4af9481e01e749409 ] -->
 			<Image name="flag=Info,technique_id=T1218,technique_name=Signed Script Proxy Execution" condition="image">wscript.exe</Image> <!--Microsoft:WindowsScriptingHost: | Credit @arekfurt -->
       		<Image name="flag=Info" condition="image">driverquery.exe</Image> <!--Microsoft:Windows: Remote recognisance of system configuration, oudated/vulnerable drivers -->
-			<Image name="flag=Info" condition="image">dsquery.exe</Image> <!--Microsoft: Query Active Directory -->
+			<Image name="flag=Info,technique_id=T1069,technique_name=Permission Groups Discovery" condition="image">dsquery.exe</Image>
+
+			<!--WAIT FOR UPDATE-->
+       		<Image name="flag=Info,technique_id=T1069,technique_name=Permission Groups Discovery" condition="image">AdFind.exe</Image>
+			
 			<Image name="flag=Info" condition="image">hh.exe</Image> <!--Microsoft:Windows: HTML Help Executable, opens CHM files -->
 			<Image name="flag=Info" condition="image">infDefaultInstall.exe</Image> <!--Microsoft: [ https://github.com/huntresslabs/evading-autoruns ] | Credit @KyleHanslovan -->
       		<Image name="flag=Info" condition="image">javaw.exe</Image> <!--Java: Monitor usage of vulnerable application and init from JAR files -->
@@ -872,7 +892,8 @@
 			<!--Sync appv publishing server-->
 			<Image name="flag=Info,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">SyncAppvPublishingServer.exe</Image>
 			<!--Windows Remote Management-->
-			<DestinationPort name="flag=Info,technique_id=T1021.006,technique_name=Windows Remote Management" condition="is">5986</DestinationPort>	
+			<DestinationPort name="flag=Info,technique_id=T1021.006,technique_name=Windows Remote Management" condition="is">5985</DestinationPort>
+         	<DestinationPort name="flag=Info,technique_id=T1021.006,technique_name=Windows Remote Management" condition="is">5986</DestinationPort>
 		</NetworkConnect>
 	</RuleGroup>
 
@@ -883,7 +904,16 @@
 			<!--SECTION: Microsoft-->
 			<Image name="flag=Info" condition="begin with">C:\ProgramData\Microsoft\Windows Defender\Platform\</Image>
 			<Image name="flag=Info" condition="end with">AppData\Local\Microsoft\Teams\current\Teams.exe</Image> <!--Microsoft: Teams-->
-			<DestinationHostname condition="end with">.microsoft.com</DestinationHostname> <!--Microsoft:Update delivery-->
+
+			<!--WAIT FOR UPDATE-->
+			<DestinationHostname condition="end with">.windowsupdate.microsoft.com</DestinationHostname> <!--Microsoft:Update delivery-->
+			<DestinationHostname condition="end with">.windowsupdate.com</DestinationHostname> <!--Microsoft:Update delivery-->
+			<DestinationHostname condition="end with">wustat.windows.com</DestinationHostname> <!--Microsoft:Update delivery-->
+			<DestinationHostname condition="end with">go.microsoft.com</DestinationHostname> <!--Microsoft:Update delivery-->
+			<DestinationHostname condition="end with">.update.microsoft.com</DestinationHostname> <!--Microsoft:Update delivery-->
+			<DestinationHostname condition="end with">download.microsoft.com</DestinationHostname> <!--Microsoft:Update delivery-->
+			<Image condition="end with">AppData\Roaming\Spotify\Spotify.exe</Image> <!--Spotify-->
+
 			<DestinationHostname condition="end with">microsoft.com.akadns.net</DestinationHostname> <!--Microsoft:Update delivery-->
 			<DestinationHostname condition="end with">microsoft.com.nsatc.net</DestinationHostname> <!--Microsoft:Update delivery-->
 			<!--Section: Loopback Addresses-->
@@ -955,9 +985,16 @@
 		<DriverLoad onmatch="exclude">
 			<!--COMMENT:	Because drivers with bugs can be used to escalate to kernel permissions, be extremely selective
 				about what you exclude from monitoring. Low event volume, little incentive to exclude.-->
-			<Signature condition="contains">microsoft</Signature> <!--Exclude signed Microsoft drivers-->
-			<Signature condition="contains">windows</Signature> <!--Exclude signed Microsoft drivers-->
-			<Signature condition="begin with">Intel </Signature> <!--Exclude signed Intel drivers-->
+			<!--Exclude Microsoft drivers with valid signature-->
+            <Rule groupRelation="and">
+                <Signature condition="contains">Microsoft</Signature>
+                <SignatureStatus condition="is">Valid</SignatureStatus>
+            </Rule>
+			<!--Exclude Intel drivers with valid signature-->
+			<Rule groupRelation="and">
+				<Signature condition="begin with">Intel </Signature>
+				<SignatureStatus condition="is">Valid</SignatureStatus>
+			</Rule>
 		</DriverLoad>
 	</RuleGroup>
 
@@ -1041,6 +1078,10 @@
 			<ImageLoaded name="flag=Info,technique_id=1053,technique_name=Scheduled Task" condition="end with">taskschd.dll</ImageLoaded>
 			<!--Squiblydoo-->
 			<ImageLoaded name="flag=Amber,technique_id=T1218.010,technique_name=Regsvr32" condition="end with">scrobj.dll</ImageLoaded>
+
+			<!--WAIT FOR UPDATE-->
+			 <OriginalFileName name="flag=Info,echnique_id=T1218.010,technique_name=Regsvr32" condition="is">scrobj.dll</OriginalFileName>
+
 			<!--Suspicious Location-->
 			<ImageLoaded name="flag=Red,technique_id=T1073,technique_name=DLL Side-Loading" condition="contains any">admin$;c$;\\;\appdata\;\temp\</ImageLoaded><!-- loaded from network file share -->
 			<ImageLoaded name="flag=Amber,technique_id=T1073,technique_name=DLL Side-Loading" condition="begin with">c:\programdata\</ImageLoaded>
@@ -1061,7 +1102,26 @@
 			<ImageLoaded name="flag=Info,technique_id=T1073,technique_name=DLL Side-Loading" condition="contains" >\Windows\IME\</ImageLoaded>	
 			<!--wmi-->
 			<ImageLoaded name="flag=Amber,technique_id=T1047,technique_name=Windows Management Instrumentation" condition="end with">wmiutils.dll</ImageLoaded>
-      
+			
+			<!--WAIT FOR UPDATE-->
+			<ImageLoaded name="flag=Info,technique_id=T1064,technique_name=Windows Scripting Host Component" condition="end with">wshom.ocx</ImageLoaded>
+          	<ImageLoaded name="flag=Info" condition="end with">scrrun.dll</ImageLoaded>
+          	<ImageLoaded name="flag=Info" condition="end with">vbscript.dll</ImageLoaded>
+			<!--Detect execution of HTA using the IE Javascript engine to bypass AMSI-->
+      		<!--Note: Rule placed before Windows Scriptingh to ensure it triggers on this on case any other component is used.-->
+      		<!---Thanks to Carlos Perez-->
+          	<Rule groupRelation="and">
+            	<ImageLoaded name="flag=Info,technique_id=T1170,technique_name=MSHTA with AMSI Bypass" condition="end with">jscript9.dll</ImageLoaded>
+            	<Image condition="end with">mshta.exe</Image>
+         	</Rule>
+			<ImageLoaded name="flag=Info,technique_id=T1064,technique_name=Windows Scripting Host Component" condition="end with">wshom.ocx</ImageLoaded>
+       		<ImageLoaded name="flag=Info" condition="end with">scrrun.dll</ImageLoaded>
+        	<ImageLoaded name="flag=Info" condition="end with">vbscript.dll</ImageLoaded>
+			<Rule groupRelation="and">
+         		<ImageLoaded name="flag=Info,echnique_id=T1170,technique_name=MSHTA with AMSI Bypass" condition="end with">jscript9.dll</ImageLoaded>
+          		<Image condition="end with">mshta.exe</Image>
+       		 </Rule>
+
 		
 		</ImageLoad>
 	</RuleGroup>
@@ -1106,7 +1166,11 @@
 			<!--Google Chrome-->
 			<TargetImage name="flag=Info" condition="end with">Google\Chrome\Application\chrome.exe</TargetImage>
 			<!--wmi-->
-			<SourceImage name="flag=Info" condition="is">C:\Windows\System32\wbem\WmiPrvSE.exe</SourceImage>		
+			<SourceImage name="flag=Info" condition="is">C:\Windows\System32\wbem\WmiPrvSE.exe</SourceImage>	
+			<Rule groupRelation="and">
+          		<SourceImage condition="is">C:\Windows\System32\dwm.exe</SourceImage>
+		  		<TargetImage condition="is">C:\Windows\System32\csrss.exe</TargetImage>
+         	</Rule>
 		</CreateRemoteThread>
 	</RuleGroup>
 
@@ -1440,6 +1504,12 @@
 			<TargetFilename name="flag=Info,technique_id=T1047,technique_name=File System Permissions Weakness" condition="begin with">C:\PerfLogs\</TargetFilename> 
 			<TargetFilename name="flag=Info,technique_id=T1047,technique_name=File System Permissions Weakness" condition="begin with">C:\Users\Public\</TargetFilename> 
 			<TargetFilename name="flag=Info,technique_id=T1047,technique_name=File System Permissions Weakness" condition="contains">\AppData\Temp\</TargetFilename>            
+		
+			<!--WAIT FOR UPDATE-->
+			<TargetFilename name="flag=Info" condition="contains">Roaming\Microsoft\Outlook\VbaProject.OTM</TargetFilename> <!--https://www.mdsec.co.uk/2020/11/a-fresh-outlook-on-mail-based-persistence/-->
+     		<TargetFilename name="flag=Info" condition="end with">.rwz</TargetFilename> 
+      		<TargetFilename name="flag=Info" condition="contains">Roaming\Microsoft\Outlook\Outlook.xml</TargetFilename><!--https://labs.f-secure.com/archive/malicous-outlook-rules/ works in combination with exclude_outlook_profile.xml -->
+		
 		</FileCreate>
 	</RuleGroup>
 
@@ -1494,6 +1564,14 @@
 	  		<TargetFilename name="flag=Info" condition="begin with">C:\Windows\System32\Tasks\Microsoft\Windows\Customer Experience Improvement Program\Server\ServerCeipAssistant</TargetFilename> <!-- Microsoft:Windows: Customer Experience Improvement Program-->
 			<!--svchost-->
 			<Image name="flag=Info" condition="is">C:\WINDOWS\system32\svchost.exe</Image>
+
+			<!--WAIT FOR UPDATE-->
+			<Rule groupRelation="and">
+               <Image name="flag=Info" condition="image">Outlook.exe</Image><!--Outlook will write on every close, external tampering is still important-->
+               <TargetFilename name="flag=Info" condition="contains">Roaming\Microsoft\Outlook\Outlook.xml</TargetFilename><!--https://labs.f-secure.com/archive/malicous-outlook-rules/-->
+            </Rule>
+
+
 		</FileCreate>
 	</RuleGroup>
 
@@ -1597,8 +1675,9 @@
 			<TargetObject name="flag=Info" condition="end with">\ProxyServer</TargetObject> <!--Windows: System and user proxy server-->
 			<!--Credential providers-->
 			<TargetObject name="flag=Red" condition="begin with">HKLM\Software\Microsoft\Windows\CurrentVersion\Authentication\Credential Provider</TargetObject> <!--Wildcard, includes Credential Providers and Credential Provider Filters-->
-			<TargetObject name="flag=Info,T1101" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\Lsa\</TargetObject> <!-- [ https://attack.mitre.org/wiki/Technique/T1131 ] [ https://attack.mitre.org/wiki/Technique/T1101 ] -->
-			<TargetObject name="flag=Red" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SecurityProviders</TargetObject> <!--Windows: Changes to WDigest-UseLogonCredential for password scraping [ https://www.trustedsec.com/april-2015/dumping-wdigest-creds-with-meterpreter-mimikatzkiwi-in-windows-8-1/ ] -->
+			<TargetObject name="flag=Info,technique_id=T1547.002,technique_name=Authentication Package" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\Lsa\Authentication</TargetObject>
+          	<TargetObject name="flag=Info,technique_id=T1547.002,technique_name=Authentication Package" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\Lsa\RunAsPPL</TargetObject><!--When set, forces and dll loaded by lsass to be MS signed, monitor for change-->
+			<TargetObject name="flag=Red" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\</TargetObject> <!--Windows: Changes to WDigest-UseLogonCredential for password scraping [ https://www.trustedsec.com/april-2015/dumping-wdigest-creds-with-meterpreter-mimikatzkiwi-in-windows-8-1/ ] -->
 			<TargetObject name="flag=Info" condition="begin with">HKLM\Software\Microsoft\Netsh</TargetObject> <!--Windows: Netsh helper DLL [ https://attack.mitre.org/wiki/Technique/T1128 ] -->
 			<!--Networking-->
 			<TargetObject name="flag=Info" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\NetworkProvider\Order\</TargetObject> <!--Windows: Order of network providers that are checked to connect to destination [ https://www.malwarearchaeology.com/cheat-sheets ] -->
@@ -1761,7 +1840,7 @@
 			<!--Credential providers-->
 			<TargetObject name="flag=Info" condition="begin with">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\Credential Provider</TargetObject> <!--Wildcard, includes Credental Providers and Credential Provider Filters-->
 			<TargetObject name="flag=Info" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\Lsa</TargetObject>
-			<TargetObject name="flag=Info,technique_id=T1003,technique_name=Credential Dumping" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SecurityProviders</TargetObject><!--Microsoft:Windows: Changes to WDigest-UseLogonCredential for password scraping [ https://www.trustedsec.com/april-2015/dumping-wdigest-creds-with-meterpreter-mimikatzkiwi-in-windows-8-1/ ] -->
+			<TargetObject name="flag=Info,technique_id=T1003,technique_name=Credential Dumping" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\</TargetObject><!--Microsoft:Windows: Changes to WDigest-UseLogonCredential for password scraping [ https://www.trustedsec.com/april-2015/dumping-wdigest-creds-with-meterpreter-mimikatzkiwi-in-windows-8-1/ ] -->
 			<TargetObject name="flag=Red,technique_id=T1003,technique_name=Credential Dumping" condition="contains">\Control\SecurityProviders\WDigest</TargetObject>
 			<!--Windows Defender tampering | Credit @ion-storm -->
 			<TargetObject name="flag=Red,technique_id=T1089,technique_name=Disabling Security Tools" condition="begin with">HKLM\SOFTWARE\Microsoft\Security Center\AntiVirusDisableNotify</TargetObject>
@@ -1824,6 +1903,10 @@
 			<TargetObject name="flag=Info" condition="end with">\ProxyServer</TargetObject> <!--Microsoft:Windows: System and user proxy server-->
 			<!-- Win32_OSRecoveryConfiguration class C2 maps to a change in values within the following key: -->
          	<TargetObject name="flag=Info,technique_id=T1047,technique_name=Windows Management Instrumentation" condition="contains">SYSTEM\CurrentControlSet\Control\CrashControl</TargetObject>
+
+			<!--WAIT FOR UPDATE-->
+			<TargetObject name="flag=Info" condition="contains">\Software\Microsoft\Office\16.0\Outlook\Security</TargetObject><!--https://www.mdsec.co.uk/2020/11/a-fresh-outlook-on-mail-based-persistence/-->
+		
 		</RegistryEvent>
 	</RuleGroup>
 
