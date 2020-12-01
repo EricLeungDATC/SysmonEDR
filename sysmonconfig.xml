@@ -687,50 +687,46 @@
 			<Image name="flag=Amber" condition="image">cmd.exe</Image> <!--Windows: Remote command prompt-->
 			<Image name="flag=Info" condition="image">cmstp.exe</Image> <!--Windows: Connection manager profiles can launch executables from WebDAV [ https://twitter.com/NickTyrer/status/958450014111633408 ] | Credit @NickTyrer @Oddvarmoe @KyleHanslovan @subTee -->
 			<Image name="flag=Amber" condition="image">cscript.exe</Image> <!--WindowsScriptingHost: | Credit @Cyb3rOps [ https://gist.github.com/Neo23x0/a4b4af9481e01e749409 ] -->
-			
-			<!--WAIT FOR UPDATE-->
-			<Image name="flag=Info" condition="image">driverquery.exe</Image> <!--Microsoft:Windows: Remote recognisance of system configuration, oudated/vulnerable drivers -->
 			<Image name="flag=Amber,technique_id=T1069,technique_name=Permission Groups Discovery" condition="image">dsquery.exe</Image> <!--Microsoft: Query Active Directory -->
-			<Image name="technique_id=T1069,technique_name=Permission Groups Discovery" condition="image">AdFind.exe</Image>
-
+			<Image name="flag=Info, technique_id=T1069,technique_name=Permission Groups Discovery" condition="image">AdFind.exe</Image>
 			<Image name="flag=Info" condition="image">hh.exe</Image> <!--Windows: HTML Help Executable, opens CHM files -->
 			<Image name="flag=Info" condition="image">infDefaultInstall.exe</Image> <!--Microsoft: [ https://github.com/huntresslabs/evading-autoruns ] | Credit @KyleHanslovan -->
-			<Image name="flag=Amber" condition="image">java.exe</Image> <!--Java: Monitor usage of vulnerable application and init from JAR files | Credit @ion-storm -->
-			<Image name="flag=Amber" condition="image">javaw.exe</Image> <!--Java: Monitor usage of vulnerable application and init from JAR files -->
+			<Image name="flag=Info" condition="image">java.exe</Image> <!--Java: Monitor usage of vulnerable application and init from JAR files | Credit @ion-storm -->
+			<Image name="flag=Info" condition="image">javaw.exe</Image> <!--Java: Monitor usage of vulnerable application and init from JAR files -->
 			<Image name="flag=Amber" condition="image">javaws.exe</Image> <!--Java: Monitor usage of vulnerable application and init from JAR files -->
 			<Image name="flag=Amber" condition="image">mmc.exe</Image> <!--Windows: -->
 			<Image name="flag=Amber" condition="image">msbuild.exe</Image> <!--Windows: [ https://www.hybrid-analysis.com/sample/a314f6106633fba4b70f9d6ddbee452e8f8f44a72117749c21243dc93c7ed3ac?environmentId=100 ] -->
 			<Image name="flag=Amber" condition="image">mshta.exe</Image> <!--Windows: HTML application executes scripts without IE protections | Credit @ion-storm [ https://en.wikipedia.org/wiki/HTML_Application ] -->
 			<Image name="flag=Info" condition="image">msiexec.exe</Image> <!--Windows: Can install from http:// paths | Credit @vector-sec -->
 			<Image name="flag=Info" condition="image">nbtstat.exe</Image> <!--Windows: NetBIOS statistics, attackers use to enumerate local network -->
-			<Image name="flag=Amber" condition="image">net.exe</Image> <!--Windows: Note - May not detect anything, net.exe is a front-end to lower APIs | Credit @ion-storm -->
+			<Image name="flag=Info" condition="image">net.exe</Image> <!--Windows: Note - May not detect anything, net.exe is a front-end to lower APIs | Credit @ion-storm -->
 			<Image name="flag=Amber" condition="image">net1.exe</Image> <!--Windows: Launched by "net.exe", but it may not detect connections either -->
-			<Image name="flag=Amber" condition="image">notepad.exe</Image> <!--Windows: [ https://secrary.com/ReversingMalware/CoinMiner/ ] [ https://blog.cobaltstrike.com/2013/08/08/why-is-notepad-exe-connecting-to-the-internet/ ] -->
-			<Image name="flag=Amber" condition="image">nslookup.exe</Image> <!--Windows: Retrieve data over DNS -->
-			<Image name="flag=Info" condition="image">powershell.exe</Image> <!--Windows: PowerShell interface-->
-			<Image name="flag=Amber" condition="image">qprocess.exe</Image> <!--Windows: [ https://www.first.org/resources/papers/conf2017/APT-Log-Analysis-Tracking-Attack-Tools-by-Audit-Policy-and-Sysmon.pdf ] -->
-			<Image name="flag=Amber" condition="image">qwinsta.exe</Image> <!--Windows: Query remote sessions | Credit @ion-storm -->
+			<Image name="flag=Info" condition="image">notepad.exe</Image> <!--Windows: [ https://secrary.com/ReversingMalware/CoinMiner/ ] [ https://blog.cobaltstrike.com/2013/08/08/why-is-notepad-exe-connecting-to-the-internet/ ] -->
+			<Image name="flag=Info" condition="image">nslookup.exe</Image> <!--Windows: Retrieve data over DNS -->
+			<Image name="flag=Red" condition="image">powershell.exe</Image> <!--Windows: PowerShell interface-->
+			<Image name="flag=Red" condition="image">qprocess.exe</Image> <!--Windows: [ https://www.first.org/resources/papers/conf2017/APT-Log-Analysis-Tracking-Attack-Tools-by-Audit-Policy-and-Sysmon.pdf ] -->
+			<Image name="flag=Red" condition="image">qwinsta.exe</Image> <!--Windows: Query remote sessions | Credit @ion-storm -->
 			<Image name="flag=Info" condition="image">qwinsta.exe</Image> <!--Windows: Remotely query login sessions on a server or workstation | Credit @ion-storm -->
 			<Image name="flag=Info" condition="image">reg.exe</Image> <!--Windows: Remote Registry editing ability | Credit @ion-storm -->
 			<Image name="flag=Info" condition="image">regsvcs.exe</Image> <!--Windows: [ https://www.hybrid-analysis.com/sample/3f94d7080e6c5b8f59eeecc3d44f7e817b31562caeba21d02ad705a0bfc63d67?environmentId=100 ] -->
 			<Image name="flag=Info" condition="image">regsvr32.exe</Image> <!--Windows: [ https://subt0x10.blogspot.com/2016/04/bypass-application-whitelisting-script.html ] -->
 			<Image name="flag=Red" condition="image">rundll32.exe</Image> <!--Windows: [ https://blog.cobaltstrike.com/2016/07/22/why-is-rundll32-exe-connecting-to-the-internet/ ] -->
 			<Image name="flag=Red" condition="image">rwinsta.exe</Image> <!--Windows: Disconnect remote sessions | Credit @ion-storm -->
-			<Image name="flag=Amber" condition="image">sc.exe</Image> <!--Windows: Remotely change Windows service settings | Credit @ion-storm -->
-			<Image name="flag=Amber" condition="image">schtasks.exe</Image> <!--Windows: Command-line interface to local and remote tasks -->
-			<Image name="flag=Amber" condition="image">taskkill.exe</Image> <!--Windows: Kill processes, has remote ability -->
+			<Image name="flag=Info" condition="image">sc.exe</Image> <!--Windows: Remotely change Windows service settings | Credit @ion-storm -->
+			<Image name="flag=Info" condition="image">schtasks.exe</Image> <!--Windows: Command-line interface to local and remote tasks -->
+			<Image name="flag=Red" condition="image">taskkill.exe</Image> <!--Windows: Kill processes, has remote ability -->
 			<Image name="flag=Info" condition="image">tasklist.exe</Image> <!--Windows: List processes, has remote ability -->
-			<Image name="flag=Amber" condition="image">wmic.exe</Image> <!--WindowsManagementInstrumentation: Credit @Cyb3rOps [ https://gist.github.com/Neo23x0/a4b4af9481e01e749409 ] -->
-			<Image name="flag=Info" condition="image">wscript.exe</Image> <!--WindowsScriptingHost: | Credit @arekfurt -->
+			<Image name="flag=REd" condition="image">wmic.exe</Image> <!--WindowsManagementInstrumentation: Credit @Cyb3rOps [ https://gist.github.com/Neo23x0/a4b4af9481e01e749409 ] -->
+			<Image name="flag=Amber" condition="image">wscript.exe</Image> <!--WindowsScriptingHost: | Credit @arekfurt -->
 			<!--Relevant 3rd Party Tools-->
 			<Image name="flag=Red" condition="image">nc.exe</Image> <!-- Nmap's modern version of netcat [ https://nmap.org/ncat/guide/index.html#ncat-overview ] [ https://securityblog.gr/1517/create-backdoor-in-windows-with-ncat/ ] -->
 			<Image name="flag=Red" condition="image">ncat.exe</Image> <!-- Nmap's modern version of netcat [ https://nmap.org/ncat/guide/index.html#ncat-overview ] [ https://securityblog.gr/1517/create-backdoor-in-windows-with-ncat/ ] -->
 			<Image name="flag=Amber" condition="image">psexec.exe</Image> <!--Sysinternals:PsExec client side | Credit @Cyb3rOps -->
 			<Image name="flag=Amber" condition="image">psexesvc.exe</Image> <!--Sysinternals:PsExec server side | Credit @Cyb3rOps -->
 			<Image name="flag=Red" condition="image">tor.exe</Image> <!--Tor [ https://www.hybrid-analysis.com/sample/800bf028a23440134fc834efc5c1e02cc70f05b2e800bbc285d7c92a4b126b1c?environmentId=100 ] -->
-			<Image name="flag=Amber" condition="image">vnc.exe</Image> <!-- VNC client | Credit @Cyb3rOps -->
-			<Image name="flag=Amber" condition="image">vncservice.exe</Image> <!-- VNC server | Credit @Cyb3rOps -->
-			<Image name="flag=Amber" condition="image">vncviewer.exe</Image> <!-- VNC client | Credit @Cyb3rOps -->
+			<Image name="flag=Red" condition="image">vnc.exe</Image> <!-- VNC client | Credit @Cyb3rOps -->
+			<Image name="flag=Red" condition="image">vncservice.exe</Image> <!-- VNC server | Credit @Cyb3rOps -->
+			<Image name="flag=Red" condition="image">vncviewer.exe</Image> <!-- VNC client | Credit @Cyb3rOps -->
 			<Image name="flag=Amber" condition="image">winexesvc.exe</Image> <!-- Winexe service executable | Credit @Cyb3rOps -->
 			<Image name="flag=Amber" condition="image">nmap.exe</Image>
 			<Image name="flag=Amber" condition="image">psinfo.exe</Image>
@@ -741,9 +737,9 @@
 			<DestinationPort name="flag=Info,technique_id=T1043,technique_name=Commonly Used Port" condition="is">25</DestinationPort> <!--SMTP mail protocol-->
 			<DestinationPort name="flag=Info,IMAP" condition="is">143</DestinationPort> <!--IMAP mail protocol port, insecure, used by threats-->
 			<DestinationPort name="flag=Red,technique_id=T1021,technique_name=Remote Services" condition="is">3389</DestinationPort> <!--Microsoft:Windows:RDP-->
-			<DestinationPort name="flag=Amber,technique_id=T1021,technique_name=Remote Services" condition="is">5800</DestinationPort> <!--VNC protocol-->
-			<DestinationPort name="flag=Amber,technique_id=T1021,technique_name=Remote Services" condition="is">5900</DestinationPort> <!--VNC protocol-->
-			<DestinationPort name="flag=Info,Alert,Metasploit" condition="is">444</DestinationPort>
+			<DestinationPort name="flag=Red,technique_id=T1021,technique_name=Remote Services" condition="is">5800</DestinationPort> <!--VNC protocol-->
+			<DestinationPort name="flag=Red,technique_id=T1021,technique_name=Remote Services" condition="is">5900</DestinationPort> <!--VNC protocol-->
+			<DestinationPort name="flag=Red,Alert,Metasploit" condition="is">444</DestinationPort>
 			<DestinationPort name="flag=Info,AllPorts" condition="begin with">1024</DestinationPort>
 			<DestinationPort name="flag=Info,AllPorts" condition="end with">65535</DestinationPort>
 			<!--Ports: Proxy-->
@@ -767,8 +763,8 @@
 	  		<!--Bitsadmin-->
 			<Image name="flag=Red,technique_id=T1197,technique_name=BITS Jobs" condition="image">bitsadmin.exe</Image>
 			<!--Critical HP services-->
-			<Image name="flag=Info,technique_id=T1021,technique_name=Remote Services" condition="image">omniinet.exe</Image> <!-- HP Data Protector https://www.cvedetails.com/vulnerability-list/vendor_id-10/product_id-20499/HP-Data-Protector.html | Credit @Cyb3rOps -->
-			<Image name="flag=Info,technique_id=T1021,technique_name=Remote Services" condition="image">hpsmhd.exe</Image> <!-- HP System Management Homepage https://www.cvedetails.com/vulnerability-list/vendor_id-10/product_id-7244/HP-System-Management-Homepage.html | Credit @Cyb3rOps -->
+			<Image name="flag=Amber,technique_id=T1021,technique_name=Remote Services" condition="image">omniinet.exe</Image> <!-- HP Data Protector https://www.cvedetails.com/vulnerability-list/vendor_id-10/product_id-20499/HP-Data-Protector.html | Credit @Cyb3rOps -->
+			<Image name="flag=Amber,technique_id=T1021,technique_name=Remote Services" condition="image">hpsmhd.exe</Image> <!-- HP System Management Homepage https://www.cvedetails.com/vulnerability-list/vendor_id-10/product_id-7244/HP-System-Management-Homepage.html | Credit @Cyb3rOps -->
 	  		<!--Native Windows tools - Living off the land-->
 			<Image name="flag=Info,technique_id=T1016,technique_name=System Network Configuration Discovery" condition="image">ipconfig.exe</Image><!--Microsoft:Windows: shows ip configuration -->
 			<Image name="flag=Info,technique_id=T1057,technique_name=Process Discovery" condition="image">tasklist.exe</Image> <!--Mitre T1057--><!--Mitre T1007--><!--Microsoft:Windows: shows current running processes-->
@@ -787,8 +783,8 @@
 			<Image name="flag=Amber,technique_id=T1218.010,technique_name=Regsvr32" condition="image">regsvr32.exe</Image> <!--Mitre T1218.010--><!--Mitre T1218.011--><!--Microsoft:Windows: [ https://subt0x10.blogspot.com/2016/04/bypass-application-whitelisting-script.html ] -->
 			<Image name="flag=Amber" condition="image">hh.exe</Image> <!--Microsoft:Windows: HTML Helper-->
 			<Image name="flag=Amber,technique_id=T1059.003,technique_name=Windows Command Shell" condition="image">cmd.exe</Image><!--Microsoft:Windows: Command prompt-->
-			<Image name="flag=Amber,technique_id=T1059.001,technique_name=PowerShell" condition="image">powershell.exe</Image><!--Microsoft:Windows: PowerShell interface-->
-			<Image name="flag=Amber,technique_id=T1202,technique_name=Indirect Command Execution" condition="image">bash.exe</Image><!--Microsoft:Windows: bash on Windows, Linux subsystem-->
+			<Image name="flag=Red,technique_id=T1059.001,technique_name=PowerShell" condition="image">powershell.exe</Image><!--Microsoft:Windows: PowerShell interface-->
+			<Image name="flag=Info,technique_id=T1202,technique_name=Indirect Command Execution" condition="image">bash.exe</Image><!--Microsoft:Windows: bash on Windows, Linux subsystem-->
 			<Image name="flag=Info,technique_id=T1202,technique_name=Indirect Command Execution" condition="image">pcalua.exe</Image><!--Microsoft:Windows: Program Compatibility Assistant)-->
 			<Image name="flag=Amber,technique_id=T1202,technique_name=Indirect Command Execution" condition="image">cscript.exe</Image>
 			<Image name="flag=Info,technique_id=T1202,technique_name=Indirect Command Execution" condition="image">wscript.exe</Image>
@@ -801,30 +797,26 @@
 			<Image name="flag=Red" condition="image">schtasks.exe</Image> <!--Microsoft:Windows: Command and Scripting Interpreter to local and remote tasks -->
 			<Image name="flag=Info" condition="image">taskkill.exe</Image> <!--Microsoft:Windows: Kill processes, has remote ability -->
 			<Image name="flag=Amber,technique_id=T1543.003,technique_name=Windows Service" condition="image">sc.exe</Image>
-			<Image name="flag=Amber,technique_id=T1033,technique_name=System Owner/User Discovery" condition="image">nltest.exe</Image><!-- netlogon testing utility-->
-			<Image name="flag=Amber,technique_id=T1202,technique_name=Indirect Command Execution" condition="image">winrs.exe</Image>
-			<Image name="flag=Amber,technique_id=T1127,technique_name=Trusted Developer Utilities Proxy Execution" condition="image">dfsvc.exe</Image><!--https://lolbas-project.github.io/lolbas/Binaries/Dfsvc/-->
-			<Image name="flag=Info,technique_id=T1569.002,technique_name=Service Execution" condition="image">dnscmd.exe</Image><!--Service Execution-->
+			<Image name="flag=Info,technique_id=T1033,technique_name=System Owner/User Discovery" condition="image">nltest.exe</Image><!-- netlogon testing utility-->
+			<Image name="flag=Info,technique_id=T1202,technique_name=Indirect Command Execution" condition="image">winrs.exe</Image>
+			<Image name="flag=Info,technique_id=T1127,technique_name=Trusted Developer Utilities Proxy Execution" condition="image">dfsvc.exe</Image><!--https://lolbas-project.github.io/lolbas/Binaries/Dfsvc/-->
+			<Image name="flag=Red,technique_id=T1569.002,technique_name=Service Execution" condition="image">dnscmd.exe</Image><!--Service Execution-->
 			<Image name="flag=Amber,technique_id=T1096,technique_name=NTFS File Attributes" condition="image">esentutl.exe</Image><!--https://lolbas-project.github.io/lolbas/Binaries/Esentutl/ Multiple options-->
 			<Image name="flag=Info,technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">expand.exe</Image>
 			<Image name="flag=Amber,technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">extrac32.exe</Image>
 			<Image name="flag=Info,technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">IEExec.exe</Image>
-			<Image name="flag=Amber,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">Msdt.exe</Image><!--https://lolbas-project.github.io/lolbas/Binaries/Msdt/-->
-			<Image name="flag=Amber,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">msiexec.exe</Image>
-			<Image name="flag=Amber,technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">Print.Exe</Image>
+			<Image name="flag=Info,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">Msdt.exe</Image><!--https://lolbas-project.github.io/lolbas/Binaries/Msdt/-->
+			<Image name="flag=Info,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">msiexec.exe</Image>
+			<Image name="flag=Info,technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">Print.Exe</Image>
 			<Image name="flag=Info,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">RegisterCimProvider.exe</Image>
 			<Image name="flag=Amber,technique_id=T1003,technique_name=Credential Dumping" condition="image">RpcPing.exe</Image><!--https://lolbas-project.github.io/lolbas/Binaries/Rpcping/-->
 			<Image name="flag=Amber,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">ScriptRunner.exe</Image>
 			<Image name="flag=Amber,technique_id=T1548.002,technique_name=Bypass User Access Control" condition="image">xwizard.exe</Image><!--https://bohops.com/2018/08/18/abusing-the-com-registry-structure-part-2-loading-techniques-for-evasion-and-persistence/ -->
 			<Image name="flag=Info,technique_id=T1202,technique_name=Indirect Command Execution" condition="image">desktopimgdownldr.exe</Image><!--https://labs.sentinelone.com/living-off-windows-land-a-new-native-file-downldr/-->
-			
-			<!--WAIT FOR UPDATE-->
 			<Image name="flag=Info,technique_id=T1059.001,technique_name=PowerShell" condition="image">OpenConsole.exe</Image>
         	<Image name="flag=Info,technique_id=T1059.001,technique_name=PowerShell" condition="image">WindowsTerminal.exe</Image>
-        	<Image name="flag=Info" condition="image">dllhost.exe</Image>
-			
 			<!--Mavinject-->
-			<Image name="flag=Amber,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">Mavinject.exe</Image>
+			<Image name="flag=Red,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">Mavinject.exe</Image>
 			<!--Native Windows tools - Living off the land-->
 			<Image name="flag=Info,technique_id=T1053,technique_name=Scheduled Task" condition="image">at.exe</Image> <!--Microsoft:Windows: Remote task scheduling | Credit @ion-storm -->
 			<Image name="flag=Amber,technique_id=T1218,technique_name=Signed Binary Proxy Execution" condition="image">certutil.exe</Image> <!--Microsoft:Windows: Certificate tool can contact outbound | Credit @ion-storm and @FVT [ https://twitter.com/FVT/status/834433734602530817 ] -->
@@ -840,14 +832,11 @@
 			<Image name="flag=Info,technique_id=T1218,technique_name=Regsvr32" condition="image">regsvr32.exe</Image><!--Microsoft:Windows: [ https://subt0x10.blogspot.com/2016/04/bypass-application-whitelisting-script.html ] -->
 			<Image name="flag=Red,technique_id=T1218.011,technique_name=Rundll32" condition="image">rundll32.exe</Image><!--Microsoft:Windows: [ https://blog.cobaltstrike.com/2016/07/22/why-is-rundll32-exe-connecting-to-the-internet/ ] -->
 			<Image name="flag=Amber,technique_id=T1543.003,technique_name=Windows Service" condition="image">sc.exe</Image> <!--Microsoft:Windows: Remotely change Windows service settings from command line | Credit @ion-storm -->
-			<Image name="flag=Info,technique_id=T1047,technique_name=Windows Management Instrumentation" condition="image">wmic.exe</Image> <!--T1047--><!--Mitre T1135--><!--Microsoft:WindowsManagementInstrumentation: Credit @Cyb3rOps [ https://gist.github.com/Neo23x0/a4b4af9481e01e749409 ] -->
+			<Image name="flag=Amber,technique_id=T1047,technique_name=Windows Management Instrumentation" condition="image">wmic.exe</Image> <!--T1047--><!--Mitre T1135--><!--Microsoft:WindowsManagementInstrumentation: Credit @Cyb3rOps [ https://gist.github.com/Neo23x0/a4b4af9481e01e749409 ] -->
 			<Image name="flag=Info,technique_id=T1218,technique_name=Signed Script Proxy Execution" condition="image">wscript.exe</Image> <!--Microsoft:WindowsScriptingHost: | Credit @arekfurt -->
       		<Image name="flag=Info" condition="image">driverquery.exe</Image> <!--Microsoft:Windows: Remote recognisance of system configuration, oudated/vulnerable drivers -->
 			<Image name="flag=Info,technique_id=T1069,technique_name=Permission Groups Discovery" condition="image">dsquery.exe</Image>
-
-			<!--WAIT FOR UPDATE-->
        		<Image name="flag=Info,technique_id=T1069,technique_name=Permission Groups Discovery" condition="image">AdFind.exe</Image>
-			
 			<Image name="flag=Info" condition="image">hh.exe</Image> <!--Microsoft:Windows: HTML Help Executable, opens CHM files -->
 			<Image name="flag=Info" condition="image">infDefaultInstall.exe</Image> <!--Microsoft: [ https://github.com/huntresslabs/evading-autoruns ] | Credit @KyleHanslovan -->
       		<Image name="flag=Info" condition="image">javaw.exe</Image> <!--Java: Monitor usage of vulnerable application and init from JAR files -->
@@ -904,8 +893,6 @@
 			<!--SECTION: Microsoft-->
 			<Image name="flag=Info" condition="begin with">C:\ProgramData\Microsoft\Windows Defender\Platform\</Image>
 			<Image name="flag=Info" condition="end with">AppData\Local\Microsoft\Teams\current\Teams.exe</Image> <!--Microsoft: Teams-->
-
-			<!--WAIT FOR UPDATE-->
 			<DestinationHostname condition="end with">.windowsupdate.microsoft.com</DestinationHostname> <!--Microsoft:Update delivery-->
 			<DestinationHostname condition="end with">.windowsupdate.com</DestinationHostname> <!--Microsoft:Update delivery-->
 			<DestinationHostname condition="end with">wustat.windows.com</DestinationHostname> <!--Microsoft:Update delivery-->
@@ -913,7 +900,6 @@
 			<DestinationHostname condition="end with">.update.microsoft.com</DestinationHostname> <!--Microsoft:Update delivery-->
 			<DestinationHostname condition="end with">download.microsoft.com</DestinationHostname> <!--Microsoft:Update delivery-->
 			<Image condition="end with">AppData\Roaming\Spotify\Spotify.exe</Image> <!--Spotify-->
-
 			<DestinationHostname condition="end with">microsoft.com.akadns.net</DestinationHostname> <!--Microsoft:Update delivery-->
 			<DestinationHostname condition="end with">microsoft.com.nsatc.net</DestinationHostname> <!--Microsoft:Update delivery-->
 			<!--Section: Loopback Addresses-->
@@ -1078,10 +1064,7 @@
 			<ImageLoaded name="flag=Info,technique_id=1053,technique_name=Scheduled Task" condition="end with">taskschd.dll</ImageLoaded>
 			<!--Squiblydoo-->
 			<ImageLoaded name="flag=Amber,technique_id=T1218.010,technique_name=Regsvr32" condition="end with">scrobj.dll</ImageLoaded>
-
-			<!--WAIT FOR UPDATE-->
-			 <OriginalFileName name="flag=Info,echnique_id=T1218.010,technique_name=Regsvr32" condition="is">scrobj.dll</OriginalFileName>
-
+			<OriginalFileName name="flag=Info,echnique_id=T1218.010,technique_name=Regsvr32" condition="is">scrobj.dll</OriginalFileName>
 			<!--Suspicious Location-->
 			<ImageLoaded name="flag=Red,technique_id=T1073,technique_name=DLL Side-Loading" condition="contains any">admin$;c$;\\;\appdata\;\temp\</ImageLoaded><!-- loaded from network file share -->
 			<ImageLoaded name="flag=Amber,technique_id=T1073,technique_name=DLL Side-Loading" condition="begin with">c:\programdata\</ImageLoaded>
@@ -1102,11 +1085,7 @@
 			<ImageLoaded name="flag=Info,technique_id=T1073,technique_name=DLL Side-Loading" condition="contains" >\Windows\IME\</ImageLoaded>	
 			<!--wmi-->
 			<ImageLoaded name="flag=Amber,technique_id=T1047,technique_name=Windows Management Instrumentation" condition="end with">wmiutils.dll</ImageLoaded>
-			
-			<!--WAIT FOR UPDATE-->
 			<ImageLoaded name="flag=Info,technique_id=T1064,technique_name=Windows Scripting Host Component" condition="end with">wshom.ocx</ImageLoaded>
-          	<ImageLoaded name="flag=Info" condition="end with">scrrun.dll</ImageLoaded>
-          	<ImageLoaded name="flag=Info" condition="end with">vbscript.dll</ImageLoaded>
 			<!--Detect execution of HTA using the IE Javascript engine to bypass AMSI-->
       		<!--Note: Rule placed before Windows Scriptingh to ensure it triggers on this on case any other component is used.-->
       		<!---Thanks to Carlos Perez-->
@@ -1504,8 +1483,7 @@
 			<TargetFilename name="flag=Info,technique_id=T1047,technique_name=File System Permissions Weakness" condition="begin with">C:\PerfLogs\</TargetFilename> 
 			<TargetFilename name="flag=Info,technique_id=T1047,technique_name=File System Permissions Weakness" condition="begin with">C:\Users\Public\</TargetFilename> 
 			<TargetFilename name="flag=Info,technique_id=T1047,technique_name=File System Permissions Weakness" condition="contains">\AppData\Temp\</TargetFilename>            
-		
-			<!--WAIT FOR UPDATE-->
+
 			<TargetFilename name="flag=Info" condition="contains">Roaming\Microsoft\Outlook\VbaProject.OTM</TargetFilename> <!--https://www.mdsec.co.uk/2020/11/a-fresh-outlook-on-mail-based-persistence/-->
      		<TargetFilename name="flag=Info" condition="end with">.rwz</TargetFilename> 
       		<TargetFilename name="flag=Info" condition="contains">Roaming\Microsoft\Outlook\Outlook.xml</TargetFilename><!--https://labs.f-secure.com/archive/malicous-outlook-rules/ works in combination with exclude_outlook_profile.xml -->
@@ -1565,7 +1543,6 @@
 			<!--svchost-->
 			<Image name="flag=Info" condition="is">C:\WINDOWS\system32\svchost.exe</Image>
 
-			<!--WAIT FOR UPDATE-->
 			<Rule groupRelation="and">
                <Image name="flag=Info" condition="image">Outlook.exe</Image><!--Outlook will write on every close, external tampering is still important-->
                <TargetFilename name="flag=Info" condition="contains">Roaming\Microsoft\Outlook\Outlook.xml</TargetFilename><!--https://labs.f-secure.com/archive/malicous-outlook-rules/-->
@@ -1904,7 +1881,6 @@
 			<!-- Win32_OSRecoveryConfiguration class C2 maps to a change in values within the following key: -->
          	<TargetObject name="flag=Info,technique_id=T1047,technique_name=Windows Management Instrumentation" condition="contains">SYSTEM\CurrentControlSet\Control\CrashControl</TargetObject>
 
-			<!--WAIT FOR UPDATE-->
 			<TargetObject name="flag=Info" condition="contains">\Software\Microsoft\Office\16.0\Outlook\Security</TargetObject><!--https://www.mdsec.co.uk/2020/11/a-fresh-outlook-on-mail-based-persistence/-->
 		
 		</RegistryEvent>
