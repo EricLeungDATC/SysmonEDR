@@ -716,7 +716,7 @@
 			<Image name="flag=Info" condition="image">schtasks.exe</Image> <!--Windows: Command-line interface to local and remote tasks -->
 			<Image name="flag=Red" condition="image">taskkill.exe</Image> <!--Windows: Kill processes, has remote ability -->
 			<Image name="flag=Info" condition="image">tasklist.exe</Image> <!--Windows: List processes, has remote ability -->
-			<Image name="flag=REd" condition="image">wmic.exe</Image> <!--WindowsManagementInstrumentation: Credit @Cyb3rOps [ https://gist.github.com/Neo23x0/a4b4af9481e01e749409 ] -->
+			<Image name="flag=Red" condition="image">wmic.exe</Image> <!--WindowsManagementInstrumentation: Credit @Cyb3rOps [ https://gist.github.com/Neo23x0/a4b4af9481e01e749409 ] -->
 			<Image name="flag=Amber" condition="image">wscript.exe</Image> <!--WindowsScriptingHost: | Credit @arekfurt -->
 			<!--Relevant 3rd Party Tools-->
 			<Image name="flag=Red" condition="image">nc.exe</Image> <!-- Nmap's modern version of netcat [ https://nmap.org/ncat/guide/index.html#ncat-overview ] [ https://securityblog.gr/1517/create-backdoor-in-windows-with-ncat/ ] -->
