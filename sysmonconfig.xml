@@ -321,7 +321,9 @@
 			<OriginalFileName name="flag=Red,technique_id=T1021.006,technique_name=Windows Remote Management" condition="is">wsmprovhost.exe</OriginalFileName>
 		    <Image name="flag=Info,technique_id=T1021.006,technique_name=Windows Remote Management" condition="image">winrm.cmd</Image>
 		</ProcessCreate>
-
+	
+	</RuleGroup>
+	<RuleGroup name="" groupRelation="or">
 		<ProcessCreate onmatch="exclude">
 
 			<ParentImage name="flag=Info" condition="is">C:\Program Files\Palo Alto Networks\Traps\cyserver.exe</ParentImage><!--Palo Alto Cortex XDR-->
@@ -506,7 +508,6 @@
 					<ParentImage name="flag=Info" condition="is">"C:\Program Files\Microsoft Monitoring Agent\Agent\MonitoringHost.exe"</ParentImage> 
 					<CommandLine name="flag=Info" condition="is">C:\Windows\system32\cscript.exe" /nologo "MonitorKnowledgeDiscovery.vbs</CommandLine> <!--Microsoft Sentinel SIEM agent, based on MOM - thanks d4ph1l--> 
 				</Rule>
-			</ParentCommandLine>
 
 			<!--Cisco Anyconnect-->
 			<ParentImage name="flag=Info" condition="end with">C:\Program Files (x86)\Cisco\Cisco AnyConnect Secure Mobility Client\vpnagent.exe</ParentImage>
@@ -1133,7 +1134,8 @@
 			<!--Psinject-->
 			<StartAddress name="flag=Red,technique_id=T1055,technique_name=Process Injection" condition="is">0x00590000</StartAddress><!--default psinject address-->
       	</CreateRemoteThread>
-
+	</RuleGroup>
+	<RuleGroup name="" groupRelation="or">
 		<CreateRemoteThread onmatch="exclude">
 			<!--COMMENT: Exclude mostly-safe sources and log anything else.-->
 			<SourceImage name="flag=Info" condition="is">C:\Windows\system32\wbem\WmiPrvSE.exe</SourceImage>
@@ -1261,7 +1263,8 @@
 				<SourceImage name="flag=Red" condition="is not">C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe</SourceImage>
 			</Rule>
 		</ProcessAccess>
-
+	</RuleGroup>
+	<RuleGroup name="" groupRelation="or">
 		<ProcessAccess onmatch="exclude">
 			<!--Carbon Black Response-->
 			<SourceImage name="flag=Info" condition="is">C:\Windows\CarbonBlack\cb.exe</SourceImage><!--CarbonBlack:Response-->
@@ -2063,6 +2066,8 @@
 		<!--NOTE: Other filesystem minifilters can make it appear to Sysmon that some files are being written twice. This is not a Sysmon issue, per Mark Russinovich.-->
 
 		<!--DATA: UtcTime, ProcessGuid, ProcessId, Image, TargetFilename, CreationUtcTime, Hash-->
+		
+	<RuleGroup name="" groupRelation="or">
 		<FileCreateStreamHash onmatch="include">
 			<TargetFilename name="flag=Info" condition="contains">Downloads</TargetFilename> <!--Downloaded files. Does not include "Run" files in IE-->
 			<TargetFilename name="flag=Info" condition="contains">Temp\7z</TargetFilename> <!--7zip extractions-->
@@ -2086,6 +2091,7 @@
 			<TargetFilename name="flag=Red" condition="end with">.exe</TargetFilename>
 			<TargetFilename name="flag=Red" condition="contains">Content.Outlook</TargetFilename> <!--Microsoft:Outlook: Attachments--> <!--PRIVACY WARNING-->
 		</FileCreateStreamHash>
+	</RuleGroup>
 
 	<RuleGroup name="" groupRelation="or">
 		<FileCreateStreamHash onmatch="exclude">
@@ -2462,7 +2468,8 @@
 			<!--Disabled due to Error : No "User" Element-->
 			<!-- <User condition="contains any">NETWORK SERVICE; LOCAL SERVICE</User> -->
         </FileDelete>
-
+	</RuleGroup>
+	<RuleGroup name="" groupRelation="or">
 		<FileDelete onmatch="include">
 			<!--Microsoft SQL server-->
 			<TargetFilename name="flag=Info" condition="contains all">C:\Program Files\Microsoft SQL Server;\Shared\ErrorDumps</TargetFilename> <!--Writable for all users-->
@@ -2667,9 +2674,6 @@
         <Image condition="is">C:\Program Files\Microsoft VS Code\Code.exe</Image>
       </ProcessTampering>
     </RuleGroup>
-
-	
-    <RuleGroup groupRelation="or">
 
 	<!--SYSMON EVENT ID 255 : ERROR-->
 		<!--"This event is generated when an error occurred within Sysmon. They can happen if the system is under heavy load
