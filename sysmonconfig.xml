@@ -1,5 +1,5 @@
 <!--
-  last update: 30 Nov 2020
+  last update: 29 Jan 2021
   sysmon-config | A Sysmon configuration focused on default high-quality event tracing and easy customization by the community
   Source version:	71 | Date: 2020-01-16
   Source project:	https://github.com/SwiftOnSecurity/sysmon-config
@@ -10,7 +10,7 @@
   Fork project:	<N/A>
   Fork license:	<N/A>
 
-  REQUIRED: Sysmon version 12 or higher (due to changes in syntax and bug-fixes)
+  REQUIRED: Sysmon version 13 or higher (due to changes in syntax and bug-fixes)
 	https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon
 
   NOTE: To collect Sysmon logs centrally for free, see https://aka.ms/WEF | Command to allow log access to the Network Service:
@@ -62,7 +62,7 @@
 
 -->
 
-<Sysmon schemaversion="4.40">
+<Sysmon schemaversion="4.50">
 	<!--SYSMON META CONFIG-->
 	<HashAlgorithms>*</HashAlgorithms> <!-- Both MD5 and SHA256 are the industry-standard algorithms for identifying files -->
 	<CheckRevocation/> <!-- Check loaded drivers, log if their code-signing certificate has been revoked, in case malware stole one to sign a kernel driver -->
@@ -499,11 +499,15 @@
 			<ParentImage name="flag=Info" condition="end with">C:\Program Files (x86)\Common Files\Adobe\OOBE\PDApp\P7\adobe_licutil.exe</ParentImage> <!--Adobe:License utility-->
 			<Image name="flag=Info" condition="end with">C:\Program Files (x86)\Common Files\Adobe\OOBE\PDApp\UWA\updaterstartuputility.exe</Image>
 			<ParentImage name="flag=Info" condition="is">C:\Program Files (x86)\Common Files\Adobe\OOBE\PDApp\UWA\updaterstartuputility.exe</ParentImage>
-			<ParentCommandLine name="flag=Info" condition="is">"C:\Program Files\Microsoft Monitoring Agent\Agent\MonitoringHost.exe" -Embedding</ParentCommandLine> 
-			<CommandLine name="flag=Info" condition="is">C:\Windows\system32\cscript.exe" /nologo "MonitorKnowledgeDiscovery.vbs</CommandLine> <!--Microsoft Sentinel SIEM agent, based on MOM - thanks d4ph1l--> 
-			<!--Azure sentinel agent-->
-			<ParentCommandLine name="flag=Info" condition="is">"C:\Program Files\Microsoft Monitoring Agent\Agent\MonitoringHost.exe" -Embedding</ParentCommandLine> 
-			<CommandLine name="flag=Info" condition="is">C:\Windows\system32\cscript.exe" /nologo "MonitorKnowledgeDiscovery.vbs</CommandLine> <!--Microsoft Sentinel SIEM agent, based on MOM - thanks d4ph1l--> 
+			
+			
+			<ParentCommandLine name="flag=Info" condition="is">"C:\Program Files\Microsoft Monitoring Agent\Agent\MonitoringHost.exe" -Embedding</ParentCommandLine>
+				<Rule groupRelation="and">
+					<ParentImage name="flag=Info" condition="is">"C:\Program Files\Microsoft Monitoring Agent\Agent\MonitoringHost.exe"</ParentImage> 
+					<CommandLine name="flag=Info" condition="is">C:\Windows\system32\cscript.exe" /nologo "MonitorKnowledgeDiscovery.vbs</CommandLine> <!--Microsoft Sentinel SIEM agent, based on MOM - thanks d4ph1l--> 
+				</Rule>
+			</ProcessCreate>
+
 			<!--Cisco Anyconnect-->
 			<ParentImage name="flag=Info" condition="end with">C:\Program Files (x86)\Cisco\Cisco AnyConnect Secure Mobility Client\vpnagent.exe</ParentImage>
 			<!--dotnet 3 or 4-->
@@ -1657,8 +1661,6 @@
 			<TargetObject name="flag=Red" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\</TargetObject> <!--Windows: Changes to WDigest-UseLogonCredential for password scraping [ https://www.trustedsec.com/april-2015/dumping-wdigest-creds-with-meterpreter-mimikatzkiwi-in-windows-8-1/ ] -->
 			<TargetObject name="flag=Info" condition="begin with">HKLM\Software\Microsoft\Netsh</TargetObject> <!--Windows: Netsh helper DLL [ https://attack.mitre.org/wiki/Technique/T1128 ] -->
 			<!--Networking-->
-			<TargetObject name="flag=Info" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\NetworkProvider\Order\</TargetObject> <!--Windows: Order of network providers that are checked to connect to destination [ https://www.malwarearchaeology.com/cheat-sheets ] -->
-			<TargetObject name="flag=Info" condition="begin with">HKLM\Software\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles</TargetObject> <!--Windows: | Credit @ion-storm -->
 			<TargetObject name="flag=Red,T1089" condition="end with">\EnableFirewall</TargetObject> <!--Windows: Monitor for firewall disablement, all firewall profiles [ https://attack.mitre.org/wiki/Technique/T1089 ] -->
 			<TargetObject name="flag=Red,T1089" condition="end with">\DoNotAllowExceptions</TargetObject> <!--Windows: Monitor for firewall disablement, all firewall profiles [ https://attack.mitre.org/wiki/Technique/T1089 ] -->
 			<TargetObject name="flag=Info" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\AuthorizedApplications\List</TargetObject> <!--Windows Firewall authorized applications for all networks| Credit @ion-storm -->
@@ -1846,6 +1848,10 @@
 			<!--Networking-->
 			<TargetObject name="flag=Info" condition="begin with">HKLM\SYSTEM\CurrentControlSet\Control\NetworkProvider\Order</TargetObject> <!--Microsoft:Windows: Order of network providers that are checked to connect to destination [ https://www.malwarearchaeology.com/cheat-sheets ] -->
 			<TargetObject name="flag=Info" condition="begin with">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles</TargetObject> <!--Microsoft:Windows: | Credit @ion-storm -->
+
+			<TargetObject name="flag=Red,technique_id=T1089,technique_name=Disabling Security Tools" condition="begin with">HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging</TargetObject>
+      		<TargetObject name="flag=Red,technique_id=T1089,technique_name=Disabling Security Tools" condition="begin with">HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging</TargetObject>
+        	<TargetObject name="flag=Amber,technique_id=T1089,technique_name=Disabling Security Tools" condition="begin with">HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\Transcription</TargetObject>
 			<!--Port monitor-->
 			<TargetObject name="flag=Info,technique_id=T1547.010,technique_name=Boot or Logon Autostart Execution - Port Monitors" condition="begin with">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Ports</TargetObject> <!--Microsoft:Windows: Printer port changes as used in CVE-2020-1048 [ https://windows-internals.com/printdemon-cve-2020-1048/ ] -->
 			<TargetObject name="flag=Amber,technique_id=T1547.010,technique_name=Boot or Logon Autostart Execution - Port Monitors" condition="begin with">HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Ports</TargetObject> <!--Microsoft:Windows: Printer port changes as used in CVE-2020-1048 [ https://windows-internals.com/printdemon-cve-2020-1048/ ] -->
@@ -1882,6 +1888,11 @@
          	<TargetObject name="flag=Info,technique_id=T1047,technique_name=Windows Management Instrumentation" condition="contains">SYSTEM\CurrentControlSet\Control\CrashControl</TargetObject>
 
 			<TargetObject name="flag=Info" condition="contains">\Software\Microsoft\Office\16.0\Outlook\Security</TargetObject><!--https://www.mdsec.co.uk/2020/11/a-fresh-outlook-on-mail-based-persistence/-->
+		
+			<!--Windows Powershell logging tampering -->
+			<TargetObject name="flag=Red,technique_id=T1089,technique_name=Disabling Security Tools" condition="begin with">HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging</TargetObject>
+			<TargetObject name="flag=Red,technique_id=T1089,technique_name=Disabling Security Tools" condition="begin with">HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging</TargetObject>
+			<TargetObject name="flag=Amber,technique_id=T1089,technique_name=Disabling Security Tools" condition="begin with">HKLM\SOFTWARE\Policies\Microsoft\Windows\PowerShell\Transcription</TargetObject>
 		
 		</RegistryEvent>
 	</RuleGroup>
@@ -2623,6 +2634,44 @@
 			</Rule>
 		</FileDelete>
     </RuleGroup>
+
+	<RuleGroup name="" groupRelation="or">
+      <!-- Event ID 24 == Clipboard change events, only captures text, not files -->
+      <!-- Default set to disabled due to privacy implications and potential data you leave for attackers, enable with care!-->
+      <ClipboardChange onmatch="include" />
+    </RuleGroup>
+
+    <RuleGroup name="" groupRelation="or">
+      <!-- Event ID 25 == Process tampering events -->
+      <ProcessTampering onmatch="exclude">
+        <Image condition="is">C:\Program Files\Mozilla Firefox\firefox.exe</Image>
+        <Image condition="is">C:\Program Files\Mozilla Firefox\updater.exe</Image>
+        <Image condition="is">C:\Program Files\Mozilla Firefox\default-browser-agent.exe</Image>
+        <Image condition="is">C:\Program Files\Mozilla Firefox\pingsender.exe</Image>
+        <Image condition="is">C:\Program Files\Git\cmd\git.exe</Image>
+        <Image condition="is">C:\Program Files\Git\mingw64\bin\git.exe</Image>
+        <Image condition="is">C:\Program Files\Git\mingw64\libexec\git-core\git.exe</Image>
+        <Image condition="is">C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe</Image>
+        <Rule groupRelation="and">
+          <Image condition="begin with">C:\Program Files (x86)\Microsoft\Edge\Application\</Image>
+          <Image condition="end with">\BHO\ie_to_edge_stub.exe</Image>
+        </Rule>
+        <Rule groupRelation="and">
+          <Image condition="begin with">C:\Program Files (x86)\Microsoft\Edge\Application\</Image>
+          <Image condition="end with">\identity_helper.exe</Image>
+        </Rule>
+        <Rule groupRelation="and">
+          <Image condition="begin with">C:\Program Files (x86)\Microsoft\EdgeUpdate\Install\</Image>
+          <Image condition="contains">\MicrosoftEdge_X64_</Image>
+        </Rule>
+        <Image condition="contains">unknown process</Image>
+        <Image condition="is">C:\Program Files\Microsoft VS Code\Code.exe</Image>
+      </ProcessTampering>
+    </RuleGroup>
+
+	
+    <RuleGroup groupRelation="or">
+
 	<!--SYSMON EVENT ID 255 : ERROR-->
 		<!--"This event is generated when an error occurred within Sysmon. They can happen if the system is under heavy load
 			and certain tasked could not be performed or a bug exists in the Sysmon service. You can report any bugs on the
