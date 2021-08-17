@@ -1,0 +1,10 @@
+//WEC Windows Event Log
+//Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+Event 
+|where EventLog=="Microsoft-Windows-TerminalServices-LocalSessionManager/Operational"
+|extend ED=parse_xml(EventData)
+|extend EventDetail=ED.DataItem.UserData.EventXML
+|extend Session=case(EventID==40, EventDetail.Session, EventID==39, EventDetail.TargetSession, EventDetail.SessionID)
+|extend Reason=EventDetail.Reason
+|extend User=EventDetail.User
+|project TimeGenerated, EventID, Computer, UserName, Session, Reason, User, Source, EventLog, RenderedDescription, Message

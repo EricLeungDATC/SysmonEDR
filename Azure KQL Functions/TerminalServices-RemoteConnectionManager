@@ -1,0 +1,10 @@
+//WEC Windows Event Log
+//Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational
+Event 
+|where EventLog=="Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational"
+|extend ED=parse_xml(EventData)
+|extend EventDetail=ED.DataItem.UserData.EventXML
+|extend listenerName=iif(EventID==261, EventDetail.listenerName, "")
+|extend User=iff(EventID==1149, EventDetail.Param1, "")
+|extend RemoteIP=iif(EventID==1149, EventDetail.Param3, "")
+|project TimeGenerated, EventID, Computer, UserName, User, RemoteIP, listenerName, Source, EventLog, RenderedDescription, Message
