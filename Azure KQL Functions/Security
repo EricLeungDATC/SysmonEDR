@@ -1,0 +1,171 @@
+let Eventdata = Event 
+| where Source=="Microsoft-Windows-Security-Auditing"
+| extend ED=parse_xml(EventData)
+| extend EventDetail=ED.DataItem.EventData.Data
+| mv-expand bagexpansion= array EventDetail
+| evaluate bag_unpack(EventDetail)
+| extend Key=tostring(['@Name']), Value=['#text']
+| evaluate pivot(Key, any(Value), TimeGenerated,Source,EventLog,Computer,EventLevel,EventLevelName,ParameterXml,EventID,RenderedDescription,EventCategory,UserName,MG,ManagementGroupName,Type)
+;
+//For Event ID 4624 & 4625, EventLogonType
+let LogonTypes=datatable(LogonType:string, EventLogonType:string)[
+    2, 'Logon via console',
+    3, 'Network Logon',
+    4, 'Batch Logon',
+    5, 'Windows Service Logon',
+    7, 'Credentials used to unlock screen',
+    8, 'Network logon sending credentials (cleartext)',
+    9, 'Different credentials used than logged on user',
+    10, 'Remote interactive logon (RDP)',
+    11, 'Cached credentials used to logon',
+    12, 'Cached remote interactive (similar to Type 10)',
+    13, 'Cached unlock (similar to Type 7)'
+  ];
+//For Event ID 4625, EventStatus
+let EventStatuses=datatable(Status:string, EventStatus:string)[
+    '0xc000005e', 'There are currently no logon servers available to service the logon request',
+    '0xc0000064', 'user name does not exist', 
+	'0xc000006a', 'user name is correct but the password is wrong', 
+	'0xc000006d', 'user logon with misspelled or bad password', 
+	'0xc000006e', 'unknown user name or bad password', 
+	'0xc000006f', 'user tried to logon outside his day of week or time of day restrictions', 
+	'0xc0000070', 'workstation restriction, or Authentication Policy Silo violation (look for event ID 4820 on domain controller)', 
+	'0xc0000071', 'expired password', 
+	'0xc0000072', 'account is currently disabled', 
+	'0xc00000dc', 'Indicates the Sam Server was in the wrong state to perform the desired operation.', 
+	'0xc0000133', 'clocks between DC and other computer too far out of sync', 
+	'0xc000015b', 'The user has not been granted the requested logon type (aka logon right) at this machine', 
+	'0xc000018c', 'The logon request failed because the trust relationship between the primary domain and the trusted domain failed', 
+	'0xc0000192', 'An attempt was made to logon, but the netlogon service was not started', 
+	'0xc0000193', 'account expiration', 
+	'0xc0000224', 'user is required to change password at next logon', 
+	'0xc0000225', 'evidently a bug in Windows and not a risk', 
+	'0xc0000234', 'user is currently locked out', 
+	'0xc00002ee', 'Failure Reason. An Error occurred during Logon', 
+	'0xc0000413', 'Logon Failure. The machine you are logging onto is protected by an authentication firewall. The specified account is not allowed to authenticate to the machine'
+];
+//For Event ID 4625, EventSubStatus
+let EventSubStatuses=datatable (SubStatus:string, EventSubStatus:string)[
+    '0xc000005e', 'There are currently no logon servers available to service the logon request', 
+	'0xc0000064', 'user name does not exist',
+	'0xc000006a', 'user name is correct but the password is wrong', 
+	'0xc000006d', 'user logon with misspelled or bad password', 
+	'0xc000006e', 'unknown user name or bad password', 
+	'0xc000006f', 'user tried to logon outside his day of week or time of day restrictions', 
+	'0xc0000070', 'workstation restriction, or Authentication Policy Silo violation (look for event ID 4820 on domain controller)', 
+	'0xc0000071', 'expired password', 
+	'0xc0000072', 'account is currently disabled', 
+	'0xc00000dc', 'Indicates the Sam Server was in the wrong state to perform the desired operation.', 
+	'0xc0000133', 'clocks between DC and other computer too far out of sync', 
+	'0xc000015b', 'The user has not been granted the requested logon type (aka logon right) at this machine', 
+	'0xc000018c', 'The logon request failed because the trust relationship between the primary domain and the trusted domain failed', 
+	'0xc0000192', 'An attempt was made to logon, but the netlogon service was not started', 
+	'0xc0000193', 'account expiration', 
+	'0xc0000224', 'user is required to change password at next logon', 
+	'0xc0000225', 'evidently a bug in Windows and not a risk', 
+	'0xc0000234', 'user is currently locked out', 
+	'0xc00002ee', 'Failure Reason. An Error occurred during Logon', 
+	'0xc0000413', 'Logon Failure. The machine you are logging onto is protected by an authentication firewall. The specified account is not allowed to authenticate to the machine'
+];
+//Security Audit Event ID 4624
+let Event4624=() {
+let processEvent = Eventdata
+| where EventID == 4624
+| extend description='An account was successfully logged on'
+| lookup LogonTypes on LogonType
+;
+processEvent;
+};
+//Security Audit Event ID 4625
+let Event4625=() {
+let processEvent = Eventdata
+| where EventID == 4625
+| extend description='An account failed to log on'
+| lookup LogonTypes on LogonType
+| lookup EventStatuses on Status
+| lookup EventSubStatuses on SubStatus
+;
+processEvent;
+};
+//Security Audit Event ID 4634
+let Event4634=() {
+let processEvent = Eventdata
+| where EventID == 4634
+| extend description='An account was logged off'
+;
+processEvent;
+};
+//Security Audit Event ID 4647
+let Event4647=() {
+let processEvent = Eventdata
+|where EventID == 4647
+|extend description='User initiated logoff'
+;
+processEvent;
+};
+//Security Audit Event ID 4648
+let Event4648=() {
+let processEvent = Eventdata
+|where EventID == 4648
+|extend  description='A logon was attempted using explicit credentials'
+;
+processEvent;
+};
+//Security Audit Event ID 4672
+let Event4672=() {
+let processEvent = Eventdata
+|where EventID == 4672
+|extend description='Special privileges assigned to new logon'
+;
+processEvent;
+};
+//Security Audit Event ID 4778
+let Event4778=() {
+let processEvent = Eventdata
+|where EventID == 4778
+|extend description='A session was reconnected to a Window Station'
+;
+processEvent;
+};
+//Security Audit Event ID 4779
+let Event4779=() {
+let processEvent = Eventdata
+|where EventID == 4779
+|extend description='A session was disconnected from a Window Station'
+;
+processEvent;
+};
+//Security Audit Event ID 4800
+let Event4800=() {
+let processEvent = Eventdata
+|where EventID == 4800
+|extend description='The workstation was locked'
+;
+processEvent;
+};
+//Security Audit Event ID 4801
+let Event4801=() {
+let processEvent = Eventdata
+|where EventID == 4801
+|extend description='The workstation was unlocked'
+;
+processEvent;
+};
+//Security Audit Event ID 4802
+let Event4802=() {
+let processEvent = Eventdata
+|where EventID == 4802
+|extend description='The screen saver was invoked'
+;
+processEvent;
+};
+//Security Audit Event ID 4803
+let Event4803=() {
+let processEvent = Eventdata
+|where EventID == 4803
+|extend description='The screen saver was dismissed'
+;
+processEvent;
+};
+(union isfuzzy=true
+Event4624, Event4625, Event4634, Event4647, Event4648, Event4672, Event4778, Event4779, Event4800, Event4801, Event4802, Event4803)
