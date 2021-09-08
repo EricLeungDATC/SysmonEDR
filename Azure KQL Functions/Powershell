@@ -1,0 +1,25 @@
+let winPowershell = Event 
+    | where Source == "PowerShell"
+    | extend ED=parse_xml(EventData)
+    | extend EventDetail=ED.DataItem.EventData.Data
+    | extend Properties = extract_all(@"(?P<key>\w+)?=(?P<value>.+?)?[\t\n]", dynamic(["key","value"]), tostring(EventDetail[2]))
+    | mv-apply Properties on (summarize properties = make_bag(pack(tostring(Properties[0]), trim(" ", tostring(Properties[1])))))
+    | evaluate bag_unpack(properties)
+    | project-away ED, EventDetail
+    ;
+let opPowershell = Event
+    | where Source == "Microsoft-Windows-PowerShell"
+    | extend ED=parse_xml(EventData)
+    | extend EventDetail=ED.DataItem.EventData.Data
+    | mv-expand bagexpansion= array EventDetail
+    | evaluate bag_unpack(EventDetail)
+    | extend Key=tostring(['@Name']), Value=['#text']
+    | evaluate pivot(Key, any(Value), TimeGenerated, Source, EventLog, Computer, EventLevel, EventLevelName, ParameterXml, EventID, RenderedDescription, EventCategory, UserName, MG, ManagementGroupName, Type, EventData)
+    | extend Properties = extract_all(@"  (?P<key>\w+ ?\w+)? = (?P<value>.+?)?(  | \n)", dynamic(["key","value"]), tostring(ContextInfo))
+    | mv-apply Properties on (summarize properties = make_bag(pack(tostring(Properties[0]), trim(" ", tostring(Properties[1])))))
+    | evaluate bag_unpack(properties)
+    ;
+(union isfuzzy=true
+    winPowershell,
+    opPowershell
+)
